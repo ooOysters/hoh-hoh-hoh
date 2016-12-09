@@ -7,11 +7,10 @@ const path = require('path');
 const walmart = require('./WalmartApi/apiController')
 const request = require('request');
 
-// console.log(walmart);
-// console.log("request", request)
 module.exports = (app, express) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+  app.use(userController.middleware.user);
   app.use(express.static(path.join(__dirname, '/../client')));
   app.use(express.static(path.join(__dirname, '/../client/app')));
   app.use(express.static(path.join(__dirname, '/../node_modules')));
@@ -22,7 +21,7 @@ module.exports = (app, express) => {
   app.post('/api/users/signin', userController.users.signin);
   app.post('/api/users/signup', userController.users.signup);
 
-  app.get('/api/wishlist', wishlistController.wishlists.get);
+  app.get('/api/wishlist', wishlistController.wishlists.getByUser);
   app.post('/api/wishlist', wishlistController.wishlists.post);
   app.post('/api/wishlist/rename', wishlistController.wishlists.rename);
   app.post('/api/wishlist/delete', wishlistController.wishlists.delete);
@@ -38,8 +37,17 @@ module.exports = (app, express) => {
   // app.get('/api/santa');
 
 
-  
   //walmart api
+
+app.post('/api/walmart', function(req, res) {
+  // console.log("REQ.BODY", req.body)
+  walmart.search(req.body.query, function(data) {
+    // console.log("DATA", data)
+    res.json(walmart.modifiedResult(JSON.parse(data)));
+    console.log("DATAAAA", data);
+  });
+ });
+
   app.get('/api/walmart/', function(req, res){  
     var publicApi = 'http://api.walmartlabs.com/v1/search?query=' + req.body.name + '&apiKey=yq5uv9adz2wm8yxqttgd9tqp';
      request({url: publicApi}, function (error, response, body) {
@@ -50,22 +58,4 @@ module.exports = (app, express) => {
       } 
     })
   });
-
-
-app.post('/api/walmart', function(req, res) {
-  console.log("REQ.BODY", req.body)
-  walmart.search(req.body.term, function(data) {
-    res.json(data);
-  });
- });
-
-  // walmartApi.walmart(req)
-  //   .then(function (data) {
-  //     // console.log("+++++++++++++++++DA++++TA", data)
-  //     res.send(data);
-  //   })
-  //   .catch(function (err) {
-  //     console.error("ERROR", err);
-  //   });
-
 };
