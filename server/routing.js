@@ -29,7 +29,7 @@ module.exports = (app, express) => {
   app.post('/api/item', itemController.items.post);
   app.post('/api/item/rename', itemController.items.rename);
   app.post('/api/item/delete', itemController.items.delete);
-  
+ };
   //walmart api
   app.get('/api/walmart/', function(req, res){  
     var publicApi = 'http://api.walmartlabs.com/v1/search?query=' + req.body.name + '&apiKey=yq5uv9adz2wm8yxqttgd9tqp';
