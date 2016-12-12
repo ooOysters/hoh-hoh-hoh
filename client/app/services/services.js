@@ -91,10 +91,10 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
-  const addItemToList = (name, id) => $http({
+  const addItemToList = (name, itemId, id) => $http({
     method: 'POST',
     url: '/api/item',
-    data: { name, id },
+    data: { name, itemId, id },
   })
       .then(({ data }) => data);
 
@@ -112,29 +112,25 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
-  const callApiForItem = (query) => {
-    // console.log("From within client/app/services/services.js: name", query)
-    return $http({
+  const callApiForItem = (query) => $http({
     method: 'POST',
     url: '/api/walmart/',
     data: {query}
   })
   .then((searchResults) => {
-    console.log("searchResults", searchResults)
-    return searchResults
-  });}
+    console.log('searchResults', searchResults);
+    return searchResults;
+  });
 
-  const saveToDatabase = (itemForDataBase) => {
-    console.log("from within save to database service layer, itemForDataBase", itemForDataBase)
-    return $http({
+  const saveToDatabase = (name, product_id) => $http({
     method: 'POST',
     url: '/api/wishlist/item',
-    data: {itemForDataBase}
+    data: {name, product_id}
   })
-  .then((itemInDatabase) => {
-    console.log("itemInDatabase", itemInDatabase)
-    return itemInDatabase
-  });}
+  .then((name, product_id) => {
+    console.log('name, product_id', name, product_id);
+    return itemInDatabase;
+  });
 
   return { getAllItems, addItemToList, editItem, deleteItemFromList, callApiForItem, saveToDatabase };
 })
