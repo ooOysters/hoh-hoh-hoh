@@ -9,7 +9,7 @@ angular.module('hoh.wishlist', [])
 .controller('WishlistController', function ($scope, Wishlist, Item) {
   $scope.data = {};                                // Main data object to store wishlists and items
   $scope.data.items = {};                          // Items from wishlist are stored here.
-  $scope.data.searchResults = [];
+  $scope.data.searchResults = []; //Search Results
 
   /*
    • Function: addList()
@@ -23,7 +23,7 @@ angular.module('hoh.wishlist', [])
     Wishlist.addList($scope.data.newWishlistName)
       .then(() => {
         $scope.data.newWishlistName = '';
-        $scope.getAllList();
+        $scope.getUserLists();
       });
   };
 
@@ -37,10 +37,16 @@ angular.module('hoh.wishlist', [])
    */
 
   $scope.getAllItems = (wishlist) => {
-    Item.getAllItems(wishlist)
+    console.log("+++++++++++++++", wishlist)
+    // console.log("+++++++++++++++++++++", wishlist)
+    Item.getAllItems(wishlist.id)
       .then((items) => {
+        console.log("ITEM", items);
+        // console.log("++++++++++++++", JSON.parse(items), wishlist.id)
         const id = wishlist.id;
-        $scope.data.items[id] = items;
+        $scope.data.items[wishlist.id] = items; //JSON.parse?
+
+        console.log("++++++++++++++ $scope.data.items[wishlist.id]", $scope.data.items[wishlist.id])
       });
   };
 
@@ -55,7 +61,7 @@ angular.module('hoh.wishlist', [])
   $scope.deleteList = ({ id }) => {
     Wishlist.deleteList(id)
       .then(() => {
-        $scope.getAllList();
+        $scope.getUserLists();
       });
   };
 
@@ -68,6 +74,13 @@ angular.module('hoh.wishlist', [])
 
   $scope.getAllList = () => {
     Wishlist.getAllList()
+      .then((wishlists) => {
+        $scope.data.wishlists = wishlists;
+      });
+  };
+
+  $scope.getUserLists = (id) => {
+    Wishlist.getUserLists(id)
       .then((wishlists) => {
         $scope.data.wishlists = wishlists;
       });
@@ -86,7 +99,7 @@ angular.module('hoh.wishlist', [])
   $scope.editListName = (newName, { id }) => {
     Wishlist.renameList(newName, id)
       .then(() => {
-        $scope.getAllList();
+        $scope.getUserLists();
         $scope.data.renameList = '';
       });
   };
@@ -112,23 +125,33 @@ angular.module('hoh.wishlist', [])
   $scope.callApi = (query, wishlist) => {
     console.log('From within client/app/wishlist/wishlist.js: name, wishlist', query, wishlist);
     $scope.data.query = query;
+
+    console.log("$scope.data.query", $scope.data.query) 
+
     Item.callApiForItem(query, wishlist.id)
       .then((searchResults) => {
-        console.log('searchResults', searchResults.data);
+       console.log('SearchResults => 126', searchResults );
         $scope.data.searchResults = searchResults.data.slice(0, 5);
+
+        console.log("SEARCHRESULTS-05)", $scope.data.searchResults );
         $scope.getAllItems(wishlist);
+        $scope.expand = true;
       });
   };
 
-  $scope.saveToDatabase = (query, index) => {
-    console.log("$scope.data.results[index].itemId, query", query, $scope.data.searchResults[index].itemId)
-    var product_id = $scope.data.searchResults[index].itemId;
-    Item.saveToDatabase(query, product_id)
+  $scope.saveToDatabase = (query, index, listId, wishlist) => {
+    console.log("$scope.data.results[index].itemId, query", query, $scope.data.searchResults[index].itemId) //refactor this
+    console.log("$scope.data.results, query", $scope.data.searchResults)
+    // var product_id = JSON.stringify($scope.data.searchResults[index]);
+    var product_id = $scope.data.searchResults[index]; // or JSON.stringify?
+    // product_id = JSON.stringify(product_id);
+    console.log("product_id", product_id)
+    Item.saveToDatabase(query, product_id, listId)
       .then(() => {
         $scope.data.searchResults = {};
         console.log('Added to db');
+         $scope.getAllItems(wishlist);
       });
-
   };
 
   /*
@@ -165,6 +188,16 @@ angular.module('hoh.wishlist', [])
       .then(() => $scope.getAllItems(wishlist));
   };
 
-  // When the Wishlist.hmtl page loads it invokes getAllList to populate the wishlists.
-  $scope.getAllList();
+  // When the Wishlist.hmtl page loads it invokes getUserLists to populate the wishlists with the current user's lists.
+  $scope.getUserLists();
+})
+.controller('ListController', function($scope, Wishlist, Item, $routeParams) {
+  $scope.listData = {};
+
+  Wishlist.getListById($routeParams.id)
+  .then((list) => {
+    $scope.listData = list[0];
+    return Item.getAllItems($scope.listData.id);
+  })
+  .then((items) => $scope.listData.items = items);
 });

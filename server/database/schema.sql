@@ -3,7 +3,7 @@
 -- ---
 
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
--- SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ---
 -- Table 'users'
@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS `sessions`;
 
 CREATE TABLE `sessions` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `token` VARCHAR(100) NULL DEFAULT NULL,
+  `token` VARCHAR(1000) NULL DEFAULT NULL,
   `user_id` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
@@ -73,6 +73,7 @@ DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE `rooms` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL DEFAULT 'Unnamed Room',
+  `admin_id` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -87,6 +88,21 @@ CREATE TABLE `users_rooms` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `user_id` INTEGER NULL DEFAULT NULL,
   `room_id` INTEGER NULL DEFAULT NULL,
+  `receiver_id` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'follows'
+--
+-- ---
+
+DROP TABLE IF EXISTS `follows`;
+
+CREATE TABLE `follows` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `user_id` INTEGER NULL DEFAULT NULL,
+  `following_id` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -99,3 +115,5 @@ ALTER TABLE `wishlists` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
 ALTER TABLE `sessions` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
 ALTER TABLE `users_rooms` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
 ALTER TABLE `users_rooms` ADD FOREIGN KEY (room_id) REFERENCES `rooms` (`id`);
+ALTER TABLE `follows` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
+ALTER TABLE `follows` ADD FOREIGN KEY (following_id) REFERENCES `users` (`id`);
