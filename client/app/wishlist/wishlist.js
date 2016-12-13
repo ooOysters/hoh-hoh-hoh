@@ -9,7 +9,7 @@ angular.module('hoh.wishlist', [])
 .controller('WishlistController', function ($scope, Wishlist, Item) {
   $scope.data = {};                                // Main data object to store wishlists and items
   $scope.data.items = {};                          // Items from wishlist are stored here.
-  $scope.data.searchResults = []; //Search Results
+  $scope.data.searchResults = [];                  // Search results
 
   /*
    • Function: addList()
@@ -37,16 +37,10 @@ angular.module('hoh.wishlist', [])
    */
 
   $scope.getAllItems = (wishlist) => {
-    console.log("+++++++++++++++", wishlist)
-    // console.log("+++++++++++++++++++++", wishlist)
     Item.getAllItems(wishlist.id)
       .then((items) => {
-        console.log("ITEM", items);
-        // console.log("++++++++++++++", JSON.parse(items), wishlist.id)
         const id = wishlist.id;
-        $scope.data.items[wishlist.id] = items; //JSON.parse?
-
-        console.log("++++++++++++++ $scope.data.items[wishlist.id]", $scope.data.items[wishlist.id])
+        $scope.data.items[wishlist.id] = items;
       });
   };
 
@@ -122,35 +116,37 @@ angular.module('hoh.wishlist', [])
       });
   };
 
+ /*
+ • Function: callItemApi(itemId)
+ • Parameters:
+ --1) ItemId is a 6 digits integer 
+ • It calls Walmart Product Lookup API
+ */
+
+  $scope.callItemApi = (itemId) => {  
+    $scope.data.itemId = itemId;
+    Item.callApiItemId(itemId, wishlist.id)
+     .then((returnedData) => {
+       return returnedData;
+     });
+  };
+
   $scope.callApi = (query, wishlist) => {
-    console.log('From within client/app/wishlist/wishlist.js: name, wishlist', query, wishlist);
     $scope.data.query = query;
-
-    console.log("$scope.data.query", $scope.data.query) 
-
     Item.callApiForItem(query, wishlist.id)
       .then((searchResults) => {
-       console.log('SearchResults => 126', searchResults );
         $scope.data.searchResults = searchResults.data.slice(0, 5);
-
-        console.log("SEARCHRESULTS-05)", $scope.data.searchResults );
         $scope.getAllItems(wishlist);
         $scope.expand = true;
       });
   };
 
   $scope.saveToDatabase = (query, index, listId, wishlist) => {
-    console.log("$scope.data.results[index].itemId, query", query, $scope.data.searchResults[index].itemId) //refactor this
-    console.log("$scope.data.results, query", $scope.data.searchResults)
-    // var product_id = JSON.stringify($scope.data.searchResults[index]);
-    var product_id = $scope.data.searchResults[index]; // or JSON.stringify?
-    // product_id = JSON.stringify(product_id);
-    console.log("product_id", product_id)
+    let product_id = $scope.data.searchResults[index];
     Item.saveToDatabase(query, product_id, listId)
       .then(() => {
         $scope.data.searchResults = {};
-        console.log('Added to db');
-         $scope.getAllItems(wishlist);
+        $scope.getAllItems(wishlist);
       });
   };
 
