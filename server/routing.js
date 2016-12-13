@@ -10,8 +10,6 @@ const walmart = require('./WalmartApi/apiController');
 const walmartSearchId = require('./WalmartApi/itemIdController');
 const request = require('request');
 
-console.log('ITEM SEARCH +++++', walmartSearchId);
-
 module.exports = (app, express) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
@@ -25,8 +23,13 @@ module.exports = (app, express) => {
   // requests for home page, with auth check
   app.post('/api/users/signin', userController.users.signin);
   app.post('/api/users/signup', userController.users.signup);
+  app.post('/api/users/follow', userController.followers.follow);
+  app.get('/api/users/following', userController.followers.getFollowing);
+  app.get('/api/users/wishlists/:id', wishlistController.wishlists.getByUser);
+  app.get('/api/users/:id', userController.users.getUser);
 
-  app.get('/api/wishlist', wishlistController.wishlists.getByUser);
+  app.get('/api/wishlist', wishlistController.wishlists.get);
+  app.get('/api/wishlist/:id', wishlistController.wishlists.getById);
   app.post('/api/wishlist', wishlistController.wishlists.post);
   app.post('/api/wishlist/rename', wishlistController.wishlists.rename);
   app.post('/api/wishlist/delete', wishlistController.wishlists.delete);
@@ -40,37 +43,28 @@ module.exports = (app, express) => {
 
   // requests for secret santa
   app.post('/api/santa/:id', santaController.createRoom);
-
+  app.get('/api/santa/:id', santaController.getRooms);
+  app.get('/api/santa/:id/:roomID', santaController.getUsersInRoom);
+  app.post('/api/savesanta/:roomID', santaController.saveSantas);
 
   //Walmart Search Api
-
-  app.post('/api/walmart', function(req, res) {
-  // console.log("REQ.BODY", req.body)
-    walmart.search(req.body.query, function(data) {
-    // console.log("DATA", data)
+  app.post('/api/walmart', (req, res) => {
+    walmart.search(req.body.query, (data) => {
       res.json(walmart.modifiedResult(JSON.parse(data)));
-    // console.log("DATAAAA", data);
     });
   });
 
-  app.get('/api/walmart/', function(req, res) {  
-    var publicApi = 'http://api.walmartlabs.com/v1/search?query=' + req.body.name + '&apiKey=' + walmartId;
-    request({url: publicApi}, function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-  // console.log("Body", body)
-        res.json(body);
-      }
-    });
-  });
   //saving itemId to the database
   app.post('/api/wishlist/item', itemController.items.postProductId);
- 
- //Walmart itemId Api
-  app.post('/api/walmart/itemId', function(req, res) {
-    walmartSearchId.searchItemId(req.body.query, function(data) {
+
+  //Walmart itemId Api
+  app.post('/api/walmart/itemId', (req, res) => {
+    walmartSearchId.searchItemId(req.body.query, (data) => {
       res.json(walmartSearchId.itemIdResult(JSON.parse(data)));
     });
   });
 
-
+  //storing itemId in a database
+  app.post('/api/wishlist/item', itemController.items.postProductId);
+  
 };

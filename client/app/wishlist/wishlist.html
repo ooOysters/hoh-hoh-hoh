@@ -1,6 +1,6 @@
 <!-- This HTML uses functions from WishlistController.js -->
 <div>
-
+<link rel="stylesheet" type="text/css" href="styles.css">
 <!-- Input Field/Search Bar to add/search Wishlist -->
   <div class="col-md-8 col-md-offset-2">
     <form name='addNewWishlist' class="form-group">
@@ -45,7 +45,7 @@
 
       <!-- X Glyph, when clicked calls deletelList and pass in the current wishlist -->
       <i class="fa fa-times" aria-hidden="true" ng-click='deleteList(wishlist)'></i>
-
+      <!--TESTED, IT WORKS -->
       <!-- Input field for editing wishlist name  -->
       <div ng-show='renaming'>
         <form name='rename'>
@@ -78,13 +78,24 @@
           />
 
           <!-- Plus button calls addItem, passes in the name of the item and the current wishlist -->
-          <i class="fa fa-plus" aria-hidden="true" ng-click="addItem(data.itemName, wishlist); callApi(data.itemName, wishlist)"></i>
+          <i class="fa fa-plus" aria-hidden="true" ng-click="callApi(data.itemName, wishlist)"></i>
+          <!-- ng-click="addItem(data.itemName, wishlist)"; -->
         </form>
 
-        <!-- Displays items -->
-        <div ng-repeat="item in data.items[wishlist.id]">
-          {{item.name item.itemId}}
-        </div>
+        <!-- Displays items HAVE TO FIX THIS ONE!!! -->
+        <!--  {{data}}
+ -->      
+         <!--  #### {{ data.items[wishlist.id]}}  --> 
+         <!--   <accordion>
+            <accordion-group ng-repeat="item in data.items[wishlist.id]">
+              <accordion-heading>
+              {{ item.name }}
+              </accordion-heading>
+              {{ item.}}
+            </accordion-group>
+           </accordion> -->
+          <div ng-repeat="item in data.items[wishlist.id]">
+            {{item.name}}
           <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click='itemRenaming = !itemRenaming'></i>
           <!-- Pencil Glyph that toggles the display of <div ng-show='itemRemaning'> below -->
 
@@ -103,20 +114,24 @@
                 /-->
                 <button type="submit" ng-click="editItem(data.newItemName, item.id, wishlist)">Submit</button>
               </form>
-
             </div> <!-- Closing <div ng-show='itemRenaming'> -->
 
           <!-- X Glyph, when clicked calls deletelItem and pass in the current wishlist and current item ID -->
           <i class="fa fa-times" aria-hidden="true" ng-click='deleteItem(wishlist, item.id)'></i>
           <br>
-          <div ng-repeat="result in data.searchResults track by $index" class="productCard" ng-click="saveToDatabase(data.query, $index)">
-            <img src="{{result.mediumImage}}">
-            {{result.name.substring(0, 70)}}
-            {{result.price}}
-            <img src="{{result.ratingImage}}">
-        </div>
+         <!--  TEST
+          {{data}} -->
+          <!-- <div ng-repeat='result in data.searchResults'>
+          {{result}}
+          </div> -->
 
         </div> <!-- Closing ng-repeat="item in data.items[wishlist.id]" -->
+          <div ng-repeat="result in data.searchResults track by $index" class="productCard" ng-click="saveToDatabase(data.query, $index, wishlist.id, wishlist)">
+            <img ng-src="{{result.mediumImage}}">
+            {{result.name.substring(0, 70)}}
+            {{result.price}}
+            <img ng-src="{{result.ratingImage}}">
+          </div>
       </div> <!-- Closing <div ng-show="expand"> -->
     </div> <!-- Closing col-md-8 col-md-offset-2 well -->
   </div> <!-- Closing ng-repeat wishlist in data.wishlists -->
