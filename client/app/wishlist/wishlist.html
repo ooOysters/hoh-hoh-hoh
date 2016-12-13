@@ -1,6 +1,6 @@
 <!-- This HTML uses functions from WishlistController.js -->
 <div>
-
+<link rel="stylesheet" type="text/css" href="styles.css">
 <!-- Input Field/Search Bar to add/search Wishlist -->
   <div class="col-md-8 col-md-offset-2">
     <form name='addNewWishlist' class="form-group">
@@ -86,8 +86,17 @@
         <!--  {{data}}
  -->      
          <!--  #### {{ data.items[wishlist.id]}}  --> 
+         <!--   <accordion>
+            <accordion-group ng-repeat="item in data.items[wishlist.id]">
+              <accordion-heading>
+              {{ item.name }}
+              </accordion-heading>
+              {{ item.}}
+            </accordion-group>
+           </accordion> -->
           <div ng-repeat="item in data.items[wishlist.id]">
-          <h1 ng-model="Names">{{item.name}}</h1>  
+          <h1 ng-model="Names">{{item.name}}</h1> 
+            <h2>{{item.product_id}}</h2>> 
 
           <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click='itemRenaming = !itemRenaming'></i>
           <!-- Pencil Glyph that toggles the display of <div ng-show='itemRemaning'> below -->
@@ -107,7 +116,6 @@
                 /-->
                 <button type="submit" ng-click="editItem(data.newItemName, item.id, wishlist)">Submit</button>
               </form>
-
             </div> <!-- Closing <div ng-show='itemRenaming'> -->
 
           <!-- X Glyph, when clicked calls deletelItem and pass in the current wishlist and current item ID -->
@@ -121,10 +129,10 @@
 
         </div> <!-- Closing ng-repeat="item in data.items[wishlist.id]" -->
           <div ng-repeat="result in data.searchResults track by $index" class="productCard" ng-click="saveToDatabase(data.query, $index, wishlist.id, wishlist)">
-            <img src="{{result.mediumImage}}">
+            <img ng-src="{{result.mediumImage}}">
             {{result.name.substring(0, 70)}}
             {{result.price}}
-            <img src="{{result.ratingImage}}">
+            <img ng-src="{{result.ratingImage}}">
           </div>
       </div> <!-- Closing <div ng-show="expand"> -->
     </div> <!-- Closing col-md-8 col-md-offset-2 well -->

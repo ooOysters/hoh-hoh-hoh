@@ -122,9 +122,21 @@ angular.module('hoh.wishlist', [])
       });
   };
 
-  $scope.callItemApi = (query) => {
-    console.log('query for ItemId', query)  
+  $scope.callItemApi = (itemId) => {
+    console.log('query for ItemId', itemId);
+    
+    $scope.data.itemId = itemId;
+    console.log("$scope.data.itemId", $scope.data.itemId);
+
+    Item.callApiItemId(itemId, wishlist.id)
+     .then((returnedData) => {
+       console.log('returnedData => 126', returnedData );
+         return returnedData;
+        // $scope.getAllItems(wishlist);
+        // $scope.expand = true;
+      });
   }
+
 
   $scope.callApi = (query, wishlist) => {
     console.log('From within client/app/wishlist/wishlist.js: name, wishlist', query, wishlist);
