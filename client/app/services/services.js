@@ -125,7 +125,7 @@ angular.module('hoh.services', [])
     data: {query}
   })
   .then((searchId) => {
-    console.log('searchId from services', searchId);
+    console.log('searchId in services', searchId);
     return searchId;
   });  
 

@@ -134,8 +134,8 @@ angular.module('hoh.wishlist', [])
          return returnedData;
         // $scope.getAllItems(wishlist);
         // $scope.expand = true;
-      });
-  }
+     });
+  };
 
 
   $scope.callApi = (query, wishlist) => {
