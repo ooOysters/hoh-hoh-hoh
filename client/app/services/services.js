@@ -118,6 +118,17 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
+
+   const callApiItemId = (query) => $http({ //API CALL +++
+    method: 'POST',
+    url: '/api/walmart/itemId',
+    data: {query}
+  })
+  .then((searchId) => {
+    console.log('searchId from services', searchId);
+    return searchId;
+  });  
+
   const callApiForItem = (query) => $http({ //API CALL +++
     method: 'POST',
     url: '/api/walmart/',

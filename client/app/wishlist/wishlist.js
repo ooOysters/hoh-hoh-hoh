@@ -122,6 +122,10 @@ angular.module('hoh.wishlist', [])
       });
   };
 
+  $scope.callItemApi = (query) => {
+    console.log('query for ItemId', query)  
+  }
+
   $scope.callApi = (query, wishlist) => {
     console.log('From within client/app/wishlist/wishlist.js: name, wishlist', query, wishlist);
     $scope.data.query = query;
