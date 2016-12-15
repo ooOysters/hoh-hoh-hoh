@@ -6,7 +6,7 @@ angular.module('description', ['ui.bootstrap'])
     {
       title: 'Ipod',
       content: 'Description',
-      stock: false //just an example
+      stock: false //example
     }
   ];
 
