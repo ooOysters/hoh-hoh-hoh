@@ -4,6 +4,18 @@
 
 A personalized app that allows you to share wish-lists with others. Named after our group name, Higher-order Hippos, otherwise known as "Hoh."
 
+## Team
+
+ - __Product Owner__: [Timothy Yin](https://github.com/yimothy)
+
+- __Git Manager__: [Sam Phillips](http://github.com/armyf35)
+
+- __Development Team Members__: [Svetlin Mladenov](http://github.com/sveem), [Chris Stair](https://github.com/ccstair), [Sam Phillips](http://github.com/armyf35), [Timothy Yin](https://github.com/yimothy)
+
+## Our Tech Stack
+
+!['techstack'](/client/techstack.png)
+
 ## Motivation
 
 Brainstorming gift ideas can be time-consuming. Even in our best of efforts, it is never guaranteed our friends will like it. Hoh-hoh-hoh helps you pick out the perfect gift, allowing you to create wish-lists and share them with others.
