@@ -8,9 +8,9 @@ A personalized app that allows you to share wish-lists with others. Named after 
 
  - __Product Owner__: [Timothy Yin](https://github.com/yimothy)
 
-- __Git Manager__: [Sam Phillips](http://github.com/armyf35)
+- __Git Manager__: [Chris Stair](https://github.com/ccstair)
 
-- __Development Team Members__: [Svetlin Mladenov](http://github.com/sveem), [Chris Stair](https://github.com/ccstair), [Sam Phillips](http://github.com/armyf35), [Timothy Yin](https://github.com/yimothy)
+- __Development Team Members__: [Svetlin Mladenov](http://github.com/sveem), [Sam Phillips](http://github.com/armyf35), [Chris Stair](https://github.com/ccstair), [Timothy Yin](https://github.com/yimothy)
 
 ## Our Tech Stack
 
