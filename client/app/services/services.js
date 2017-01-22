@@ -21,6 +21,14 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
+  const getUserLists = (id) => $http({
+    method: 'GET',
+    url: '/api/users/wishlists/' + id,
+  })
+    .then(({ data }) => data);
+
+  const getListById = (id) => $http.get('/api/wishlist/' + id).then(({ data }) => data);
+
   /*
    • Function: addList(name)
    • Invoked by: WishlistController - addList
@@ -76,7 +84,7 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
-  return { addList, getAllList, renameList, deleteList };
+  return { addList, getAllList, getUserLists, renameList, deleteList, getListById };
 })
 
 /* Item Factory
@@ -84,19 +92,19 @@ angular.module('hoh.services', [])
  */
 
 .factory('Item', ($http) => {
-  const getAllItems = ({ id }) => $http({
+  const getAllItems = ( id ) => $http({
     method: 'POST',
     url: '/api/item/get',
     data: { id },
   })
     .then(({ data }) => data);
 
-  const addItemToList = (name, itemId, id) => $http({
+  const addItemToList = (name, id) => $http({
     method: 'POST',
     url: '/api/item',
-    data: { name, itemId, id },
+    data: { name, id },
   })
-      .then(({ data }) => data);
+    .then(({ data }) => data);
 
   const editItem = (name, item) => $http({
     method: 'POST',
@@ -112,26 +120,32 @@ angular.module('hoh.services', [])
   })
     .then(({ data }) => data);
 
-  const callApiForItem = (query) => $http({
+
+  const callApiItemId = (query) => $http({ 
+    url: '/api/walmart/itemId',
+    data: {query}
+  })
+  .then((searchId) => {
+    return searchId;
+  });  
+
+  const callApiForItem = (query) => $http({ //API CALL +++
     method: 'POST',
     url: '/api/walmart/',
     data: {query}
   })
   .then((searchResults) => {
-    console.log('searchResults', searchResults);
     return searchResults;
   });
 
-  const saveToDatabase = (name, product_id) => $http({
+  const saveToDatabase = (name, product_id, wishlist_id) => $http({ //SAVE TO DATABASE
     method: 'POST',
     url: '/api/wishlist/item',
-    data: {name, product_id}
+    data: {name, product_id, wishlist_id}
   })
-  .then((name, product_id) => {
-    console.log('name, product_id', name, product_id);
-    return itemInDatabase;
+  .then((response) => {
+    // return itemInDatabase;
   });
-
   return { getAllItems, addItemToList, editItem, deleteItemFromList, callApiForItem, saveToDatabase };
 })
 
@@ -171,5 +185,30 @@ angular.module('hoh.services', [])
     $location.path('/login');
   };
 
+  if (isAuth()) {
+    getSessionData();
+  }
+
   return { signin, signup, isAuth, signout, getSessionData, user };
+})
+.factory('Follows', ($http) => {
+  const followUser = (followId) => {
+    return $http.post('/api/users/follow', {
+      followId
+    })
+      .then((res) => res.data);
+  };
+
+  const getAllFollowsUsers = () => {
+    return $http.get('/api/users/following')
+      .then((res) => res.data);
+  };
+
+  return { getAllFollowsUsers, followUser };
+})
+.factory('User', ($http) => {
+  const getUser = (id) => $http.get('/api/users/' + id)
+  .then((res) => res.data);
+  
+  return { getUser };
 });

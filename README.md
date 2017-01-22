@@ -12,6 +12,18 @@ Brainstorming gift ideas can be time-consuming. Even in our best of efforts, it 
 
 The app is still in its beta phase and needs a lot of work. So far, we have successfully linked our app to a MySQL database and added authentication. We have yet to personalize our user page and add social features (like being able to add friends, share wish-lists and offer to buy gifts for a friend).
 
+## Team
+
+ - __Product Owner__: [Timothy Yin](https://github.com/yimothy)
+
+- __Git Manager__: [Chris Stair](https://github.com/ccstair)
+
+- __Development Team Members__: [Svetlin Mladenov](http://github.com/sveem), [Sam Phillips](http://github.com/armyf35), [Chris Stair](https://github.com/ccstair), [Timothy Yin](https://github.com/yimothy)
+
+## Our Tech Stack
+
+!['techstack'](/client/techstack.png)
+
 ## Getting Started
 
 You will need a MySQL database to store user information including wish-lists and items. Simply `npm install` and `cp server/database/config.js.example server/database/config.js` in the project root, then fill in the blanks

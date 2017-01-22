@@ -14,13 +14,25 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
 
   <body>
     <div class='container-fluid' ng-controller="AuthController">
 
+      <!-- Play secret santa button -->
+      <div style='float:left; padding-top:10px; margin-bottom:-40px'>
+        <a href = '/#!/santa'>
+        <button type='button'
+          class="btn btn-default btn-md">
+          Play Secret Santa!
+        </button>
+      </a>
+      </div>
       <!-- Sign out Button !-->
       <div style='float:right; padding-top:10px; margin-bottom:-40px' ng-hide="!isAuth()">
+        {{ user.username }}
         <button
           type="button"
           class="btn btn-default btn-md"
@@ -44,6 +56,8 @@
     <script src="app/login/auth.js"></script>
     <script src="app/services/services.js"></script>
     <script src="app/santa/santa.js"></script>
+    <script src="app/santa/room.js"></script>
+    <script src="app/user/user.js"></script>
     <script src ="app/app.js"></script>
   </body>
 </html>
